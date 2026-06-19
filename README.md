@@ -54,7 +54,7 @@
 
 ## Installation
 
-1. Download `GL-EcoAudit.jar` from the releases section.
+1. Download the plugin
 2. Place the JAR in your server `plugins/` folder.
 
    > **Required dependency:**  
