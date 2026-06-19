@@ -54,8 +54,13 @@
 
 ## Installation
 
-1. Download `GL-EcoAudit.jar` from the releases section.
-2. Place the JAR in your Paper 1.21.4 server's `plugins/` folder.
+1. Download the plugin
+2. Place the JAR in your server `plugins/` folder.
+
+   > **Required dependency:**  
+   > Download and place the following plugin in the same `plugins/` folder for GL-EcoAudit to work:  
+   > https://github.com/7Str1kes/Nexus/releases/tag/Release
+
 3. Make sure **Vault** is installed along with an economy plugin (e.g. EssentialsX, CMI, etc.).
 4. Restart the server or reload plugins.
 5. Done! The plugin will generate its configuration files automatically.
