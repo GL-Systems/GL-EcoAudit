@@ -1,0 +1,32 @@
+TYPE: "SQLITE" # SQLITE, H2, MYSQL, POSTGRESQL, MONGO
+
+INIT_TIMEOUT_SECONDS: 10
+
+SETTINGS:
+  SQLITE:
+    FILE_NAME: "GL-EcoAudit"
+  H2:
+    FILE_NAME: "GL-EcoAudit"
+  MONGO:
+    AUTH_TYPE: "URI"
+    URI: ""
+    IP_ADDRESS: ""
+    PORT: 27017
+    DATABASE: "GL-EcoAudit"
+    AUTH:
+      USERNAME: ""
+      PASSWORD: ""
+  MYSQL:
+    IP_ADDRESS: ""
+    PORT: 3306
+    DATABASE: "GL-EcoAudit"
+    AUTH:
+      USERNAME: ""
+      PASSWORD: ""
+  POSTGRESQL:
+    IP_ADDRESS: ""
+    PORT: 5432
+    DATABASE: "GL-EcoAudit"
+    AUTH:
+      USERNAME: ""
+      PASSWORD: ""

@@ -1,0 +1,40 @@
+TITLE: "&#51cf66Received Transactions"
+
+ENTRY_NAME: "&#f0e8ffFrom: {target}"
+ENTRY_LORE:
+  - "&#a78bfaAmount: &#f0e8ff+${amount}"
+  - "&#a78bfaDate: &#f0e8ff{date}"
+
+NO_TRANSACTIONS: "&#ff6b6bNo transactions to display."
+
+BACK:
+  SLOT: 48
+  MATERIAL: ARROW
+  AMOUNT: 1
+  NAME: "&eBack"
+  LORE: []
+  GLOW: false
+
+NEXT_PAGE:
+  SLOT: 50
+  MATERIAL: ARROW
+  AMOUNT: 1
+  NAME: "&aNext Page"
+  LORE: []
+  GLOW: false
+
+PREVIOUS_PAGE:
+  SLOT: 47
+  MATERIAL: ARROW
+  AMOUNT: 1
+  NAME: "&aPrevious Page"
+  LORE: []
+  GLOW: false
+
+CLOSE:
+  SLOT: 49
+  MATERIAL: BARRIER
+  AMOUNT: 1
+  NAME: "&cClose"
+  LORE: []
+  GLOW: false

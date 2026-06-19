@@ -1,0 +1,6 @@
+name: GL-EcoAudit
+version: '${version}'
+
+main: org.glstudio.economy.GLEcoAudit
+api-version: '1.21.4'
+load: POSTWORLD

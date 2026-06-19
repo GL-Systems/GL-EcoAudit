@@ -1,0 +1,33 @@
+TITLE: "&#c084fcTransactions"
+
+PLAYER_HEAD:
+  SLOT: 13
+  NAME: "&#f0e8ff{player}"
+  LORE:
+    - "&#a78bfaBalance: &#f0e8ff${balance}"
+
+SENT:
+  SLOT: 11
+  MATERIAL: RED_STAINED_GLASS_PANE
+  AMOUNT: 1
+  NAME: "&#ff6b6bMoney Sent"
+  LORE:
+    - "&#ff9999Click to view sent transactions"
+  GLOW: false
+
+RECEIVED:
+  SLOT: 15
+  MATERIAL: GREEN_STAINED_GLASS_PANE
+  AMOUNT: 1
+  NAME: "&#51cf66Money Received"
+  LORE:
+    - "&#94d82dClick to view received transactions"
+  GLOW: false
+
+BORDER:
+  ENABLED: false
+  MATERIAL: BLACK_STAINED_GLASS_PANE
+  AMOUNT: 1
+  NAME: " "
+  LORE: []
+  GLOW: false

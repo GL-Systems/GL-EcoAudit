@@ -1,0 +1,30 @@
+GLOBAL:
+  NO_PERMISSION: "&#ff0000You don't have permission to execute this command."
+  ONLY_PLAYERS: "&#ff0000This command can only be executed by a player."
+
+COMMANDS:
+  TRANSACTIONS:
+    USAGE:
+      - "&#c084fc&m                                   "
+      - ""
+      - "&#c084fc&l  Transactions Help"
+      - ""
+      - "&#a78bfa  /transactions &#f0e8ff- Open the transactions menu"
+      - ""
+      - "&#c084fc&m                                   "
+    RELOAD_SUCCESS: "&#10b981Configuration reloaded successfully."
+
+  ECOAUDIT:
+    USAGE:
+      - "&#c084fc&m                                   "
+      - ""
+      - "&#c084fc&l  /ecoaudit Help"
+      - ""
+      - "&#a78bfa  /ecoaudit reload &#f0e8ff- Reload config"
+      - "&#a78bfa  /ecoaudit purge [days] &#f0e8ff- Purge old records"
+      - ""
+      - "&#c084fc&m                                   "
+    RELOAD_ERROR: "&#ff0000Failed to reload configuration: {error}"
+    PURGE_INVALID_DAYS: "&#ff0000Days must be at least 1."
+    PURGE_INVALID_NUMBER: "&#ff0000Invalid number: {value}"
+    PURGE_SUCCESS: "&#10b981Purged records older than {days} days."
