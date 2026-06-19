@@ -12,6 +12,8 @@ import org.glstudio.economy.modules.services.AuditService;
 import org.glstudio.nexus.utils.LoggerUtils;
 
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TransactionsListener implements Listener {
 
@@ -37,8 +39,9 @@ public class TransactionsListener implements Listener {
         String targetName = parts[0];
         double amount;
         try {
-            amount = Double.parseDouble(parts[1]);
+            amount = parseShorthandAmount(parts[1]);
         } catch (NumberFormatException e) {
+            LoggerUtils.logDebug("LISTENER", "Invalid amount format: " + parts[1]);
             return;
         }
 
@@ -46,14 +49,23 @@ public class TransactionsListener implements Listener {
 
         UUID senderUUID = sender.getUniqueId();
         String senderName = sender.getName();
+        double balanceBefore = plugin.getVaultService().getBalance(sender);
 
         Player onlineTarget = findPlayer(targetName);
         if (onlineTarget != null) {
             UUID targetUUID = onlineTarget.getUniqueId();
             String targetNameActual = onlineTarget.getName();
-            LoggerUtils.logDebug("LISTENER", "Recording /pay: " + senderName + " -> " + targetNameActual + " $" + amount);
-            Bukkit.getScheduler().runTaskLater(plugin, () ->
-                    auditService.auditTransaction(senderUUID, senderName, targetUUID, targetNameActual, amount), 1L);
+            UUID onlineTargetUUID = targetUUID;
+            String onlineTargetName = targetNameActual;
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                double balanceAfter = plugin.getVaultService().getBalance(sender);
+                if (balanceBefore - balanceAfter >= amount - 0.01) {
+                    LoggerUtils.logDebug("LISTENER", "Recording /pay: " + senderName + " -> " + onlineTargetName + " $" + amount);
+                    auditService.auditTransaction(senderUUID, senderName, onlineTargetUUID, onlineTargetName, amount);
+                } else {
+                    LoggerUtils.logDebug("LISTENER", "Skipped /pay " + senderName + " -> " + onlineTargetName + " $" + amount + " (balance unchanged, likely insufficient funds)");
+                }
+            }, 1L);
             return;
         }
 
@@ -61,9 +73,17 @@ public class TransactionsListener implements Listener {
         if (offlineTarget.hasPlayedBefore() || offlineTarget.getName() != null) {
             UUID targetUUID = offlineTarget.getUniqueId();
             String targetNameActual = offlineTarget.getName() != null ? offlineTarget.getName() : targetName;
-            LoggerUtils.logDebug("LISTENER", "Recording /pay to offline: " + senderName + " -> " + targetNameActual + " $" + amount);
-            Bukkit.getScheduler().runTaskLater(plugin, () ->
-                    auditService.auditTransaction(senderUUID, senderName, targetUUID, targetNameActual, amount), 1L);
+            UUID offlineTargetUUID = targetUUID;
+            String offlineTargetName = targetNameActual;
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                double balanceAfter = plugin.getVaultService().getBalance(sender);
+                if (balanceBefore - balanceAfter >= amount - 0.01) {
+                    LoggerUtils.logDebug("LISTENER", "Recording /pay to offline: " + senderName + " -> " + offlineTargetName + " $" + amount);
+                    auditService.auditTransaction(senderUUID, senderName, offlineTargetUUID, offlineTargetName, amount);
+                } else {
+                    LoggerUtils.logDebug("LISTENER", "Skipped /pay " + senderName + " -> " + offlineTargetName + " $" + amount + " (balance unchanged, likely insufficient funds)");
+                }
+            }, 1L);
             return;
         }
 
@@ -80,5 +100,27 @@ public class TransactionsListener implements Listener {
             }
         }
         return null;
+    }
+
+    private double parseShorthandAmount(String input) {
+        if (input == null || input.isEmpty()) {
+            throw new NumberFormatException("Empty amount");
+        }
+
+        Pattern pattern = Pattern.compile("^(-?\\d+(?:\\.\\d+)?)([kKmMbB]?)$");
+        Matcher matcher = pattern.matcher(input.trim());
+        if (!matcher.matches()) {
+            throw new NumberFormatException("Invalid amount: " + input);
+        }
+
+        double value = Double.parseDouble(matcher.group(1));
+        String suffix = matcher.group(2);
+
+        switch (suffix.toLowerCase()) {
+            case "k": return value * 1000;
+            case "m": return value * 1000000;
+            case "b": return value * 1000000000;
+            default: return value;
+        }
     }
 }
