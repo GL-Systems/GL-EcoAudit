@@ -1,47 +1,38 @@
 plugins {
-    id("java-library")
-    id("xyz.jpenilla.run-paper") version "3.0.2"
-    id("com.gradleup.shadow") version "8.3.5"
-    id("io.freefair.lombok") version "8.14"
+    `java-library`
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.run.paper)
+    alias(libs.plugins.lombok)
 }
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly(libs.paper.api)
+    implementation(libs.nexus.core)
+    implementation(libs.nexus.storage)
 
-    implementation("org.glstudio:Nexus:1.0-SNAPSHOT")
-
-    // Vault
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-
-    // Database - HikariCP
-    implementation("com.zaxxer:HikariCP:6.0.0")
-
-    // SQLite
-    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
-
-    // H2
-    implementation("com.h2database:h2:2.2.224")
-
-    // MySQL
-    implementation("com.mysql:mysql-connector-j:8.3.0")
-
-    // PostgreSQL
-    implementation("org.postgresql:postgresql:42.7.1")
-
-    // MongoDB
-    implementation("org.mongodb:mongodb-driver-sync:5.1.0")
-}
-
-configurations {
-    compileOnly {
+    compileOnly(libs.vault.api) {
         exclude(group = "org.bukkit", module = "bukkit")
     }
+
+    // Downloaded by the server at load time via plugin.yml's "libraries" instead of being shaded.
+    compileOnly(libs.hikaricp)
+    compileOnly(libs.sqlite.jdbc)
+    compileOnly(libs.h2)
+    compileOnly(libs.mysql.connector)
+    compileOnly(libs.postgresql)
+    compileOnly(libs.mongodb.driver.sync)
+
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.paper.api)
+    testImplementation(libs.hikaricp)
+    testImplementation(libs.h2)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 java {
@@ -49,18 +40,40 @@ java {
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
+
     runServer {
-        // Configure the Minecraft version for our task.
-        // This is the only required configuration besides applying the plugin.
-        // Your plugin's jar (or shadowJar if present) will be used automatically.
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.11")
         jvmArgs("-Xms2G", "-Xmx2G")
     }
 
     processResources {
-        val props = mapOf("version" to version)
+        val props = mapOf(
+            "version" to version,
+            "hikariVersion" to libs.versions.hikari.get(),
+            "sqliteVersion" to libs.versions.sqlite.get(),
+            "h2Version" to libs.versions.h2.get(),
+            "mysqlVersion" to libs.versions.mysql.get(),
+            "postgresqlVersion" to libs.versions.postgresql.get(),
+            "mongodbVersion" to libs.versions.mongodb.get(),
+        )
         filesMatching("plugin.yml") {
             expand(props)
         }
+    }
+
+    jar {
+        archiveClassifier = "plain"
+    }
+
+    shadowJar {
+        archiveClassifier = ""
+        mergeServiceFiles()
+    }
+
+    build {
+        dependsOn(shadowJar)
     }
 }

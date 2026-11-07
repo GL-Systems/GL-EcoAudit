@@ -1,6 +1,31 @@
 name: GL-EcoAudit
 version: '${version}'
 
-main: org.glstudio.economy.GLEcoAudit
-api-version: '1.21.4'
+main: org.glstudio.ecoaudit.GEcoAudit
+api-version: '1.21'
 load: POSTWORLD
+
+# Vault is required at runtime (the plugin disables itself without an economy); listed here so it
+# always loads first.
+softdepend: [Vault]
+
+permissions:
+  # Declared with the same default an undeclared node had (operators only); grant it to players
+  # who should browse their own payments.
+  golden.ecoaudit.transactions:
+    description: Use /transactions to browse your own sent and received payments.
+    default: op
+  golden.ecoaudit.admin:
+    description: Inspect other players, see the rankings, and use /ecoaudit.
+    default: op
+
+# Downloaded by the server at load time instead of being shaded into the jar.
+libraries:
+  - com.zaxxer:HikariCP:${hikariVersion}
+  - org.xerial:sqlite-jdbc:${sqliteVersion}
+  - com.h2database:h2:${h2Version}
+  - com.mysql:mysql-connector-j:${mysqlVersion}
+  - org.postgresql:postgresql:${postgresqlVersion}
+  - org.mongodb:mongodb-driver-sync:${mongodbVersion}
+  - org.mongodb:mongodb-driver-core:${mongodbVersion}
+  - org.mongodb:bson:${mongodbVersion}

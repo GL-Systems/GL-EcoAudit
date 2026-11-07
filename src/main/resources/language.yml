@@ -1,3 +1,5 @@
+config-version: 1
+
 GLOBAL:
   NO_PERMISSION: "&#ff0000You don't have permission to execute this command."
   ONLY_PLAYERS: "&#ff0000This command can only be executed by a player."
@@ -10,9 +12,23 @@ COMMANDS:
       - "&#c084fc&l  Transactions Help"
       - ""
       - "&#a78bfa  /transactions &#f0e8ff- Open the transactions menu"
+      - "&#a78bfa  /transactions <player> &#f0e8ff- View another player's transactions"
+      - "&#a78bfa  /transactions top [sent|received] &#f0e8ff- View top rankings"
+      - "&#a78bfa  /transactions search <name> &#f0e8ff- Search transactions"
       - ""
       - "&#c084fc&m                                   "
     RELOAD_SUCCESS: "&#10b981Configuration reloaded successfully."
+    PLAYER_NOT_FOUND: "&#ff0000Player not found: {player}"
+    SEARCH_USAGE: "&#ff0000Usage: /transactions search <name>"
+    TOP_USAGE: "&#ff0000Usage: /transactions top [sent|received]"
+    TOP_SEPARATOR: "&#8b5cf6&m                                   "
+    TOP_TITLE_SENT: "&#c084fc&lTop Senders"
+    TOP_TITLE_RECEIVED: "&#c084fc&lTop Receivers"
+    TOP_EMPTY: "&#ff6b6bNo data yet."
+    # {direction} is TOP_DIRECTION_SENT or TOP_DIRECTION_RECEIVED.
+    TOP_ENTRY: "&#a78bfa#{rank} &#f0e8ff{name} &7- &a${total} &7({count} {direction})"
+    TOP_DIRECTION_SENT: "sent"
+    TOP_DIRECTION_RECEIVED: "received"
 
   ECOAUDIT:
     USAGE:
@@ -28,3 +44,14 @@ COMMANDS:
     PURGE_INVALID_DAYS: "&#ff0000Days must be at least 1."
     PURGE_INVALID_NUMBER: "&#ff0000Invalid number: {value}"
     PURGE_SUCCESS: "&#10b981Purged records older than {days} days."
+
+MENUS:
+  LOADING: "&#ffff00Loading..."
+  SEARCHING: "&7Searching: &f{query}"
+  CLEAR_SEARCH: "&eClick to clear search"
+  SEARCH_PROMPT: "&#a78bfaType a player name to search for:"
+  CATEGORY: "&7Category: &f{category}"
+  STATS_SEPARATOR: "&7&m                           "
+  STATS_SENT: "&bSent: &f{count} &7(&a${total}&7)"
+  STATS_RECEIVED: "&bReceived: &f{count} &7(&a${total}&7)"
+  STATS_LOADING: "&8Loading stats..."

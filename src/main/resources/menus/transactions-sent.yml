@@ -1,3 +1,5 @@
+config-version: 1
+
 TITLE: "&#ff6b6bSent Transactions"
 
 ENTRY_NAME: "&#f0e8ffTo: {target}"
@@ -6,6 +8,12 @@ ENTRY_LORE:
   - "&#a78bfaDate: &#f0e8ff{date}"
 
 NO_TRANSACTIONS: "&#ff6b6bNo transactions to display."
+
+SEARCH:
+  MATERIAL: COMPASS
+  NAME: "&bSearch"
+  LORE:
+    - "&7Click to search by player name"
 
 BACK:
   SLOT: 48
